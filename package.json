@@ -1,7 +1,7 @@
 {
   "name": "node-rest-mysql",
   "version": "1.0.0",
-  "description": "Boiler plate for Node, REST, and MySQL",
+  "description": "Boilerplate for Node, REST, and MySQL",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +10,8 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "express": "^4.14.0"
+    "ejs": "^2.5.2",
+    "express": "^4.14.0",
+    "mysql": "^2.11.1"
   }
 }

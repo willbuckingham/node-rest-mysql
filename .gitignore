@@ -44,3 +44,8 @@ jspm_packages
 
 # Output of 'npm pack'
 *.tgz
+
+## Project specific
+
+# MySQL Credentials File
+credentials.js
