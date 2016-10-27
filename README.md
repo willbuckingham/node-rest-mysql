@@ -6,7 +6,7 @@ This is a boilerplate for using Node.js with Express to host a RESTful API for a
 
 1. `npm install`
 
-2. create a `credentials.j`s file in the root of the repo
+2. create a `credentials.js` file in the root of the repo
 
    ```javascript
    module.exports = {

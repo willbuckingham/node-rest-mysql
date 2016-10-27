@@ -1,13 +1,18 @@
 // set variables for environment
-var express 	= require('express');
-var app 		= express();
-var path 		= require('path');
-var router		= express.Router();
+var express     = require('express');
+var router      = express.Router();
+var app         = express();
+var path        = require('path');
+var bodyParser  = require('body-parser');
 
-var mysql      	= require('mysql');
+var mysql       = require('mysql');
 var credentials = require('./credentials'); //CREATE THIS FILE YOURSELF
+var connection  = mysql.createConnection(credentials);
 
-var connection 	= mysql.createConnection(credentials);
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // views as directory for all template files
 app.set('views', path.join(__dirname, 'views'));
@@ -19,24 +24,35 @@ router.use(function(req, res, next) {
     // log each request to the console
     console.log(req.method, req.url);
 
+    connection.connect();
+
     // continue doing what we were doing and go to the route
     next(); 
 });
 
-//cerate routes
+//api routes
 router.get('/', function(req, res) {
-	res.render('index');
+    res.json({
+        name: 'Panorama API', 
+        version: '1.0'
+    });
 });
 
 //apply routes to app
-app.use('/', router);
+//all of our routes will be prefixed with /api
+app.use('/api', router);
 
-connection.connect();
+//non api route for our views
+app.get('/', function(req, res) {
+    res.render('index');
+});
+
+
 
 connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-	if (err) throw err;
+    if (err) throw err;
 
-	console.log('The solution is: ', rows[0].solution);
+    console.log('The solution is: ', rows[0].solution);
 });
 
 connection.end();
@@ -44,6 +60,6 @@ connection.end();
 
 
 // Set server port
-var port    	= process.env.PORT || 3000;
+var port        = process.env.PORT || 3000;
 app.listen(port);
 console.log('server is running');
