@@ -19,15 +19,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // use either jade or ejs       // instruct express to server up static assets
 app.use(express.static('public'));
 
+connection.connect();
+
 //router middleware
+//we can use this later to validate some stuff
 router.use(function(req, res, next) {
     // log each request to the console
-    console.log(req.method, req.url);
-
-    connection.connect();
+    console.log("You have hit the /api", req.method, req.url);
 
     // continue doing what we were doing and go to the route
-    next(); 
+    next();
 });
 
 //api routes
@@ -37,6 +38,47 @@ router.get('/', function(req, res) {
         version: '1.0'
     });
 });
+
+router.get('/test', function(req, res) {
+    var test;
+    
+    connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
+        if (err) throw err;
+
+        test = rows[0].solution;
+        console.log(test);
+
+        res.json({
+            'test': test
+        });
+    }); 
+});
+
+//we can use .route to then hook on multiple verbs
+router.route('/panoramas')
+    .get(function(req, res) {
+        connection.query('SELECT * FROM panos', function(err, rows, fields) {
+            if (err) console.error(err);
+
+            res.json(rows);
+        });
+    })
+
+    .post(function(req, res) {
+
+    });
+//end route
+
+router.route('/panoramas/:id')
+    .get(function(req, res) {
+        console.log(req.id);
+        var query = connection.query('SELECT * FROM panos WHERE id=?', [req.id], function(err, rows, fields) {
+            if (err) console.error(err);
+            console.log(rows);
+            res.json(rows);
+        });
+        console.log(query);
+    });
 
 //apply routes to app
 //all of our routes will be prefixed with /api
@@ -49,13 +91,9 @@ app.get('/', function(req, res) {
 
 
 
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-    if (err) throw err;
 
-    console.log('The solution is: ', rows[0].solution);
-});
 
-connection.end();
+
 
 
 
