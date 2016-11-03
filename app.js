@@ -111,7 +111,7 @@ router.route('/panoramas')
                 res.sendStatus(404);
             }else{
                 res.status(201);
-                res.location('/api/panoramas/' + result.insertedId);
+                res.location('/api/panoramas/' + result.insertId);
                 res.end();
             }
         });
