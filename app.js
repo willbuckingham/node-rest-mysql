@@ -14,6 +14,7 @@ try{
     credentials = require('./credentials_env');
 }
 
+// Setup MySQL Connection
 var connection  = mysql.createConnection(credentials);
 
 // configure app to use bodyParser()
@@ -29,7 +30,8 @@ app.use(express.static('public'));
 // Support for Crossdomain JSONP
 app.set('jsonp callback name', 'callback');
 
-connection.connect();
+// Connect to MySQL DB
+connection.connect(); //TODO: decide if this should be moved above the app.uses/sets
 
 // Router Middleware
 router.use(function(req, res, next) {
@@ -37,12 +39,12 @@ router.use(function(req, res, next) {
     console.log("You have hit the /api", req.method, req.url);
 
     // Remove powered by header
-    // res.set('X-Powered-By', ''); // OLD WAY
-    // res.removeHeader("X-Powered-By"); // OLD WAY 2
+    //res.set('X-Powered-By', ''); // OLD WAY
+    //res.removeHeader("X-Powered-By"); // OLD WAY 2
     // See bottom of script for better way
 
     // CORS 
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "*"); //TODO: potentially switch to white list version
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
     // we can use this later to validate some stuff
@@ -70,7 +72,7 @@ router.get('/', function(req, res) {
     res.jsonp({
         name: 'Panorama API', 
         version: '1.0',
-        routes: routes
+        routes: routes // TODO: format this better
     });
 
 });
@@ -83,7 +85,6 @@ router.get('/test', function(req, res) {
         if (err) throw err;
 
         test = rows[0].solution;
-        console.log(test);
 
         res.jsonp({
             'test': test
@@ -103,6 +104,7 @@ router.route('/panoramas')
     //we can use .route to then hook on multiple verbs
     .post(function(req, res) {
         var data = req.body; // maybe more carefully assemble this data
+        console.log(req.body)
         var query = connection.query('INSERT INTO panos SET ?', [data], function(err, result){
             if(err){
                 console.error(err);
