@@ -51,13 +51,8 @@ router.use(function(req, res, next) {
     next();
 });
 
-// api routes
+// API Routes
 router.get('/', function(req, res) {
-    res.jsonp({
-        name: 'Panorama API', 
-        version: '1.0'
-    });
-
     //Generate a List of Routes on the APP
     var route, routes = [];
     app._router.stack.forEach(function(middleware){
@@ -71,8 +66,16 @@ router.get('/', function(req, res) {
         }
     });
     console.log(routes)
+
+    res.jsonp({
+        name: 'Panorama API', 
+        version: '1.0',
+        routes: routes
+    });
+
 });
 
+// Simple MySQL Test
 router.get('/test', function(req, res) {
     var test;
     
@@ -91,15 +94,27 @@ router.get('/test', function(req, res) {
 // http://www.restapitutorial.com/lessons/httpmethods.html
 // POST - Create
 // GET - Read
-// PUT - Update/Replace
-// PATCH - Update/Modify
+// PUT - Update/Replace - AKA you pass all the data to the update
+// PATCH - Update/Modify - AKA you just pass the changes to the update
 // DELETE - Delete
 
 // COLLECTION ROUTES
 router.route('/panoramas')
     //we can use .route to then hook on multiple verbs
     .post(function(req, res) {
-        //todo
+        var data = {
+            //data to post, assemble from params???
+        }
+        var query = connection.query('INSERT INTO panos SET ?', [data], function(err, result){
+            if(err){
+                console.error(err);
+                res.sendStatus(404);
+            }else{
+                res.status(201);
+                res.location('/api/panoramas/' + result.insertedId)
+            }
+        });
+        console.log(query.sql);
     })
 
     .get(function(req, res) {
@@ -119,14 +134,15 @@ router.route('/panoramas')
         res.sendStatus(404);
     })
     .delete(function(req, res) {
+        // LET's TRUNCATE TABLE..... NOT!!!!!
         res.sendStatus(404);
     });
 //end route
 
-// INDIVIDUAL ROUTES
+// SPECIFIC ITEM ROUTES
 router.route('/panoramas/:id')
     .post(function(req, res){
-        //
+        //specific item should not be posted to (either 404 not found or 409 conflict?)
         res.sendStatus(404);
     })
 
@@ -136,16 +152,47 @@ router.route('/panoramas/:id')
                 //INVALID
                 console.error(err);
                 res.sendStatus(404);
-            }
-            if(rows.length){
-                res.jsonp(rows);
             }else{
-                //ID NOT FOUND
-                res.sendStatus(404);
+                if(rows.length){
+                    res.jsonp(rows);
+                }else{
+                    //ID NOT FOUND
+                    res.sendStatus(404);
+                }
             }
         });
         console.log(query.sql);
+    })
+
+    .put(function(req, res){
+        var data = {
+            //data to put, assemble from params???
+        };
+        var query = connection.query('UPDATE panos SET ? WHERE id=? LIMIT 1', [data, req.params.id], function(err, results){
+            if(err){
+                console.log(err);
+                res.sendStatus(404);
+            }else{
+                res.status(200).jsonp({changedRows:result.changedRows, affectedRows:result.affectedRows}).end();
+            }
+        })
+    })
+
+    .patch(function(req, res){
+        // Need to decide how much this should differ from .put
+    })
+
+    .delete(function(req, res){
+        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], function(err, results){
+            if(err){
+                console.log(err);
+                res.sendStatus(404);
+            }else{
+                res.status(200).jsonp({affectedRows:result.affectedRows}).end();
+            }
+        });
     });
+//end route
 
 // Apply Routes to App
 // All of these routes will be prefixed with /api
