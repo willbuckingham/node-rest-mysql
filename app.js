@@ -6,7 +6,14 @@ var path        = require('path');
 var bodyParser  = require('body-parser');
 
 var mysql       = require('mysql');
-var credentials = require('./credentials'); //CREATE THIS FILE YOURSELF
+var credentials;
+try{
+    credentials = require('./credentials'); //CREATE THIS FILE YOURSELF
+}catch(e){
+    //heroku support
+    credentials = require('./credentials_env');
+}
+
 var connection  = mysql.createConnection(credentials);
 
 // configure app to use bodyParser()
@@ -18,6 +25,9 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // use either jade or ejs       // instruct express to server up static assets
 app.use(express.static('public'));
+
+// Support for Crossdomain JSONP
+app.set('jsonp callback name', 'callback');
 
 connection.connect();
 
@@ -43,11 +53,12 @@ router.use(function(req, res, next) {
 
 // api routes
 router.get('/', function(req, res) {
-    res.json({
+    res.jsonp({
         name: 'Panorama API', 
         version: '1.0'
     });
 
+    //Generate a List of Routes on the APP
     var route, routes = [];
     app._router.stack.forEach(function(middleware){
         if(middleware.route){ // routes registered directly on the app
@@ -71,30 +82,32 @@ router.get('/test', function(req, res) {
         test = rows[0].solution;
         console.log(test);
 
-        res.json({
+        res.jsonp({
             'test': test
         });
     }); 
 });
 
-//POST - Create
-//GET - Read
-//PUT - Update/Replace
-//PATCH - Update/Modify
-//DELETE - Delete
+// http://www.restapitutorial.com/lessons/httpmethods.html
+// POST - Create
+// GET - Read
+// PUT - Update/Replace
+// PATCH - Update/Modify
+// DELETE - Delete
 
-//we can use .route to then hook on multiple verbs
+// COLLECTION ROUTES
 router.route('/panoramas')
+    //we can use .route to then hook on multiple verbs
+    .post(function(req, res) {
+        //todo
+    })
+
     .get(function(req, res) {
         connection.query('SELECT * FROM panos', function(err, rows, fields) {
             if (err) console.error(err);
 
-            res.json(rows);
+            res.jsonp(rows);
         });
-    })
-
-    .post(function(req, res) {
-        //todo
     })
 
     //We do NOT do these to the collection
@@ -108,16 +121,26 @@ router.route('/panoramas')
     .delete(function(req, res) {
         res.sendStatus(404);
     });
-
 //end route
 
+// INDIVIDUAL ROUTES
 router.route('/panoramas/:id')
+    .post(function(req, res){
+        //
+        res.sendStatus(404);
+    })
+
     .get(function(req, res) {
         var query = connection.query('SELECT * FROM panos WHERE id=?', [req.params.id], function(err, rows, fields) {
-            if (err) console.error(err);
+            if (err) {
+                //INVALID
+                console.error(err);
+                res.sendStatus(404);
+            }
             if(rows.length){
-                res.json(rows);
+                res.jsonp(rows);
             }else{
+                //ID NOT FOUND
                 res.sendStatus(404);
             }
         });
