@@ -102,9 +102,7 @@ router.get('/test', function(req, res) {
 router.route('/panoramas')
     //we can use .route to then hook on multiple verbs
     .post(function(req, res) {
-        var data = {
-            //data to post, assemble from params???
-        }
+        var data = req.body; // maybe more carefully assemble this data
         var query = connection.query('INSERT INTO panos SET ?', [data], function(err, result){
             if(err){
                 console.error(err);
