@@ -164,5 +164,6 @@ app.disable('x-powered-by');
 
 // Set server port
 var port        = process.env.PORT || 3000;
-app.listen(port);
+var host        = process.env.HOST || '0.0.0.0'; // For Heroku
+app.listen(port, host);
 console.log('server is running');
