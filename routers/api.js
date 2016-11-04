@@ -92,11 +92,12 @@ module.exports = function(express, connection){
 	    })
 
 	    .get(function(req, res) {
-	        connection.query('SELECT * FROM panos', function(err, rows, fields) {
+	        var query = connection.query('SELECT * FROM panos', function(err, rows, fields) {
 	            if (err) console.error(err);
 
 	            res.jsonp(rows);
 	        });
+	        console.log(query.sql);
 	    })
 
 	    //We do NOT do these to the collection
@@ -142,8 +143,7 @@ module.exports = function(express, connection){
 	        var data = {
 	            //data to put, assemble from params???
 	        };
-	        //LIMIT is somewhat redundant, but I use it for extra sanity, and so if I bungle something I only can break one row.
-	        var query = connection.query('UPDATE panos SET ? WHERE id=? LIMIT 1', [data, req.params.id], function(err, result){
+	        var query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
@@ -151,13 +151,16 @@ module.exports = function(express, connection){
 	                res.status(200).jsonp({changedRows:result.changedRows, affectedRows:result.affectedRows}).end();
 	            }
 	        })
+	        console.log(query.sql)
 	    })
 
 	    .patch(function(req, res){
 	        // Need to decide how much this should differ from .put
+	        //in theory (hmm) this should require all the fields to be present to do the update?
 	    })
 
 	    .delete(function(req, res){
+	        //LIMIT is somewhat redundant, but I use it for extra sanity, and so if I bungle something I only can break one row.
 	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
@@ -166,6 +169,7 @@ module.exports = function(express, connection){
 	                res.status(200).jsonp({affectedRows:result.affectedRows}).end();
 	            }
 	        });
+	        console.log(query.sql)
 	    });
 	//end route
 
