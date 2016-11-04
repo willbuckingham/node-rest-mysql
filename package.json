@@ -2,9 +2,9 @@
   "name": "node-rest-mysql",
   "version": "1.0.0",
   "description": "Boilerplate for Node, REST, and MySQL",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

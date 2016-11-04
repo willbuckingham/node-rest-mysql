@@ -13,6 +13,7 @@ Developed using a couple resources:
 5. Node 404 (http://stackoverflow.com/a/33310600)
 6. RESTful Best Practices (http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries)
 7. Test a Node RESTful API with Mocha and Chai (https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai)
+8. (Consider Using) Express CORS (https://github.com/expressjs/cors)
 
 ## Installation
 
