@@ -142,7 +142,7 @@ module.exports = function(express, connection){
 	        var data = {
 	            //data to put, assemble from params???
 	        };
-	        var query = connection.query('UPDATE panos SET ? WHERE id=? LIMIT 1', [data, req.params.id], function(err, results){
+	        var query = connection.query('UPDATE panos SET ? WHERE id=? LIMIT 1', [data, req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
@@ -157,7 +157,7 @@ module.exports = function(express, connection){
 	    })
 
 	    .delete(function(req, res){
-	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], function(err, results){
+	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
