@@ -2,6 +2,8 @@
 
 This is a boilerplate with proper for using Node.js with Express to host a RESTful API for a MySQL/MariaDB Database.
 
+Supports Collection and Specific Item requests over GET, POST, PUT, DELETE (PATCH not currently supported)
+
 ## Resources
 
 ### Developed using a couple resources:
@@ -38,4 +40,13 @@ This is a boilerplate with proper for using Node.js with Express to host a RESTf
 
 4. Your database needs to be setup with a table called `panos`
 
-5. Use Postman or your browser to make requests to the api, at `/api/…`
+5. Use Postman or your browser to make requests to the api, at `/api/panoramas/` and `/api/panoramas/:id`
+
+## TODO
+
+1. Use whitelisted Origin header, instead of "*"
+2. Fix and Improve Route List Generation - `/api/`
+3. Support for Filtering, Limiting, Sorting Results
+4. Architecture decision and Routes for how we handle Panorama Categories
+5. Authentication?
+6. Implement things from [Consider Using](#consider-using) Section

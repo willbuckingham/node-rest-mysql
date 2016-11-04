@@ -18,7 +18,7 @@
     // Setup MySQL Connection
     var connection  = mysql.createConnection(credentials);
     // Connect to MySQL DB
-    connection.connect(); //TODO: decide if this should be moved above the app.uses/sets
+    connection.connect();
 
     // configure app to use bodyParser()
     // this will let us get the data from a POST
