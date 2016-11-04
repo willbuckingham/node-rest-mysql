@@ -27,10 +27,10 @@ This is a boilerplate with proper for using Node.js with Express to host a RESTf
 
    ```javascript
    module.exports = {
-   	host     : 'localhost',
-   	user     : 'me',
-   	password : 'secret',
-   	database : 'my_db'
+       host     : 'localhost',
+       user     : 'me',
+       password : 'secret',
+       database : 'my_db'
    }
    ```
 
