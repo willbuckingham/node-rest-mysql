@@ -1,4 +1,4 @@
-module.exports = (function(){
+//module.exports = (function(){
 
     // set variables for app
     var express     = require('express');
@@ -49,8 +49,10 @@ module.exports = (function(){
     // Better way to disable x-powered-by
     app.disable('x-powered-by');
 
-    return app;
-})();
+   /* return app;
+})();*/
+
+module.exports = app;
 
 
 //OLD WAY BEFORE WE SWITCHED THIS TO MAKE APP A MODULE

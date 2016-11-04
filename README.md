@@ -33,4 +33,6 @@ Developed using a couple resources:
 
 3. OR pass in MYSQL_HOST, etc as evnironment variables (eg. from Heroku's Config Vars)
 
-4. Use Postman or your browser to make requests to the api, at `/api/…`
+4. Your database needs to be setup with a table called `panos`
+
+5. Use Postman or your browser to make requests to the api, at `/api/…`

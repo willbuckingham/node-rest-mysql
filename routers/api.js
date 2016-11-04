@@ -142,6 +142,7 @@ module.exports = function(express, connection){
 	        var data = {
 	            //data to put, assemble from params???
 	        };
+	        //LIMIT is somewhat redundant, but I use it for extra sanity, and so if I bungle something I only can break one row.
 	        var query = connection.query('UPDATE panos SET ? WHERE id=? LIMIT 1', [data, req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
