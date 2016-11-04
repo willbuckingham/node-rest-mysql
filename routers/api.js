@@ -3,7 +3,7 @@ module.exports = (express, connection) => {
 	var router      = express.Router();
 
 	// Router Middleware
-	router.use(function(req, res, next) {
+	router.use((req, res, next) => {
 	    // log each request to the console
 	    console.log("You have hit the /api", req.method, req.url);
 
@@ -28,11 +28,11 @@ module.exports = (express, connection) => {
 	    //Generate a List of Routes on the APP
 	    //http://stackoverflow.com/a/28199817
 	    var route, routes = [];
-	    app._router.stack.forEach(function(middleware){
+	    app._router.stack.forEach((middleware) => {
 	        if(middleware.route){ // routes registered directly on the app
 	            routes.push(middleware.route);
 	        } else if(middleware.name === 'router'){ // router middleware 
-	            middleware.handle.stack.forEach(function(handler){
+	            middleware.handle.stack.forEach((handler) => {
 	                route = handler.route;
 	                route && routes.push(route);
 	            });
@@ -52,7 +52,7 @@ module.exports = (express, connection) => {
 	router.get('/test', (req, res) => {
 	    var test;
 	    
-	    connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
+	    connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
 	        if (err) throw err;
 
 	        test = rows[0].solution;

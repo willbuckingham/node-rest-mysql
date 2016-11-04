@@ -1,4 +1,4 @@
-//module.exports = (function(){
+//module.exports = (() => {
 
     // set variables for app
     var express     = require('express');
