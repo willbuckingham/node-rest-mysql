@@ -23,10 +23,8 @@ module.exports = function(express, connection){
 	});
 
 	// API ROOT - Display Available Routes
-
-	//TODO: THIS NO LONGER WORKS BECAUSE WE MOVE THE ROUTES INTO A SEPARATE FILE, UNLESS I PASS IN APP AS WELL
-
-	/*router.get('/', function(req, res) {
+	router.get('/', function(req, res) {
+/*		//TODO: THIS NO LONGER WORKS BECAUSE WE MOVE THE ROUTES INTO A SEPARATE FILE, UNLESS I PASS IN APP AS WELL
 	    //Generate a List of Routes on the APP
 	    //http://stackoverflow.com/a/28199817
 	    var route, routes = [];
@@ -41,14 +39,14 @@ module.exports = function(express, connection){
 	        }
 	    });
 	    console.log(routes)
-
+*/
 	    res.jsonp({
 	        name: 'Panorama API', 
 	        version: '1.0',
-	        routes: routes // TODO: format this better
+//	        routes: routes // TODO: format this better, after above is fixed
 	    });
 
-	});*/
+	});
 
 	// Simple MySQL Test
 	router.get('/test', function(req, res) {
