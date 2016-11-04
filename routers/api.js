@@ -140,9 +140,7 @@ module.exports = function(express, connection){
 	    })
 
 	    .put(function(req, res){
-	        var data = {
-	            //data to put, assemble from params???
-	        };
+	        var data = req.body;
 	        var query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], function(err, result){
 	            if(err){
 	                console.log(err);
