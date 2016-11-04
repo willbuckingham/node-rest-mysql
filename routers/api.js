@@ -1,5 +1,5 @@
 //Dependencies - Express 4.x and the MySQL Connection
-module.exports = function(express, connection){
+module.exports = (express, connection) => {
 	var router      = express.Router();
 
 	// Router Middleware
@@ -23,7 +23,7 @@ module.exports = function(express, connection){
 	});
 
 	// API ROOT - Display Available Routes
-	router.get('/', function(req, res) {
+	router.get('/', (req, res) => {
 /*		//TODO: THIS NO LONGER WORKS BECAUSE WE MOVE THE ROUTES INTO A SEPARATE FILE, UNLESS I PASS IN APP AS WELL
 	    //Generate a List of Routes on the APP
 	    //http://stackoverflow.com/a/28199817
@@ -49,7 +49,7 @@ module.exports = function(express, connection){
 	});
 
 	// Simple MySQL Test
-	router.get('/test', function(req, res) {
+	router.get('/test', (req, res) => {
 	    var test;
 	    
 	    connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
@@ -73,10 +73,10 @@ module.exports = function(express, connection){
 	// COLLECTION ROUTES
 	router.route('/panoramas')
 	    //we can use .route to then hook on multiple verbs
-	    .post(function(req, res) {
+	    .post((req, res) => {
 	        var data = req.body; // maybe more carefully assemble this data
 	        console.log(req.body)
-	        var query = connection.query('INSERT INTO panos SET ?', [data], function(err, result){
+	        var query = connection.query('INSERT INTO panos SET ?', [data], (err, result) => {
 	            if(err){
 	                console.error(err);
 	                res.sendStatus(404);
@@ -89,8 +89,8 @@ module.exports = function(express, connection){
 	        console.log(query.sql);
 	    })
 
-	    .get(function(req, res) {
-	        var query = connection.query('SELECT * FROM panos', function(err, rows, fields) {
+	    .get((req, res) => {
+	        var query = connection.query('SELECT * FROM panos', (err, rows, fields) => {
 	            if (err) console.error(err);
 
 	            res.jsonp(rows);
@@ -99,14 +99,14 @@ module.exports = function(express, connection){
 	    })
 
 	    //We do NOT do these to the collection
-	    .put(function(req, res) {
+	    .put((req, res) => {
 	        //res.status(404).send("Not Found").end();
 	        res.sendStatus(404);
 	    })
-	    .patch(function(req, res) {
+	    .patch((req, res) => {
 	        res.sendStatus(404);
 	    })
-	    .delete(function(req, res) {
+	    .delete((req, res) => {
 	        // LET's TRUNCATE TABLE..... NOT!!!!!
 	        res.sendStatus(404);
 	    });
@@ -114,13 +114,13 @@ module.exports = function(express, connection){
 
 	// SPECIFIC ITEM ROUTES
 	router.route('/panoramas/:id')
-	    .post(function(req, res){
+	    .post((req, res) => {
 	        //specific item should not be posted to (either 404 not found or 409 conflict?)
 	        res.sendStatus(404);
 	    })
 
-	    .get(function(req, res) {
-	        var query = connection.query('SELECT * FROM panos WHERE id=?', [req.params.id], function(err, rows, fields) {
+	    .get((req, res) => {
+	        var query = connection.query('SELECT * FROM panos WHERE id=?', [req.params.id], (err, rows, fields) => {
 	            if (err) {
 	                //INVALID
 	                console.error(err);
@@ -137,9 +137,9 @@ module.exports = function(express, connection){
 	        console.log(query.sql);
 	    })
 
-	    .put(function(req, res){
+	    .put((req, res) => {
 	        var data = req.body;
-	        var query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], function(err, result){
+	        var query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], (err, result) => {
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
@@ -150,14 +150,14 @@ module.exports = function(express, connection){
 	        console.log(query.sql)
 	    })
 
-	    .patch(function(req, res){
+	    .patch((req, res) => {
 	        // Need to decide how much this should differ from .put
 	        //in theory (hmm) this should require all the fields to be present to do the update?
 	    })
 
-	    .delete(function(req, res){
+	    .delete((req, res) => {
 	        //LIMIT is somewhat redundant, but I use it for extra sanity, and so if I bungle something I only can break one row.
-	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], function(err, result){
+	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], (err, result) => {
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);

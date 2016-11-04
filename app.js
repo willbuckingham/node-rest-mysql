@@ -42,7 +42,7 @@
     app.use('/api', apiRouter);
 
     // non api route for our views
-    app.get('/', function(req, res) {
+    app.get('/', (req, res) => {
         res.render('index');
     });
 
