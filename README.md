@@ -36,11 +36,13 @@ Supports Collection and Specific Item requests over GET, POST, PUT, DELETE (PATC
    }
    ```
 
-3. OR pass in MYSQL_HOST, etc as evnironment variables (eg. from Heroku's Config Vars)
+3. OR pass in MYSQL_HOST, etc as environment variables (eg. from Heroku's Config Vars)
 
-4. Your database needs to be setup with a table called `panos`
+4. Your database needs to be setup with a table called `panos`, feel free to use the included SQL, the only required field for the sake of this application is the `id` field.
 
-5. Use Postman or your browser to make requests to the api, at `/api/panoramas/` and `/api/panoramas/:id`
+5. `npm run start` to run server
+
+6. Use Postman or your browser to make requests to the api, at `/api/panoramas/` and `/api/panoramas/:id`
 
 ## TODO
 

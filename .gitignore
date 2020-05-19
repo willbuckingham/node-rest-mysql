@@ -45,6 +45,9 @@ jspm_packages
 # Output of 'npm pack'
 *.tgz
 
+# Editor files
+.idea
+
 ## Project specific
 
 # MySQL Credentials File

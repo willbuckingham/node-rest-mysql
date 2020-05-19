@@ -1,6 +1,6 @@
 //Dependencies - Express 4.x and the MySQL Connection
 module.exports = (express, connection) => {
-	var router      = express.Router();
+	const router      = express.Router();
 
 	// Router Middleware
 	router.use((req, res, next) => {
@@ -27,7 +27,7 @@ module.exports = (express, connection) => {
 /*		//TODO: THIS NO LONGER WORKS BECAUSE WE MOVE THE ROUTES INTO A SEPARATE FILE, UNLESS I PASS IN APP AS WELL
 	    //Generate a List of Routes on the APP
 	    //http://stackoverflow.com/a/28199817
-	    var route, routes = [];
+	    const route, routes = [];
 	    app._router.stack.forEach((middleware) => {
 	        if(middleware.route){ // routes registered directly on the app
 	            routes.push(middleware.route);
@@ -50,7 +50,7 @@ module.exports = (express, connection) => {
 
 	// Simple MySQL Test
 	router.get('/test', (req, res) => {
-	    var test;
+	    let test;
 	    
 	    connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
 	        if (err) throw err;
@@ -74,9 +74,9 @@ module.exports = (express, connection) => {
 	router.route('/panoramas')
 	    //we can use .route to then hook on multiple verbs
 	    .post((req, res) => {
-	        var data = req.body; // maybe more carefully assemble this data
-	        console.log(req.body)
-	        var query = connection.query('INSERT INTO panos SET ?', [data], (err, result) => {
+	        const data = req.body; // maybe more carefully assemble this data
+	        console.log(req.body);
+	        const query = connection.query('INSERT INTO panos SET ?', [data], (err, result) => {
 	            if(err){
 	                console.error(err);
 	                res.sendStatus(404);
@@ -90,7 +90,7 @@ module.exports = (express, connection) => {
 	    })
 
 	    .get((req, res) => {
-	        var query = connection.query('SELECT * FROM panos', (err, rows, fields) => {
+	        const query = connection.query('SELECT * FROM panos', (err, rows, fields) => {
 	            if (err) console.error(err);
 
 	            res.jsonp(rows);
@@ -120,7 +120,7 @@ module.exports = (express, connection) => {
 	    })
 
 	    .get((req, res) => {
-	        var query = connection.query('SELECT * FROM panos WHERE id=?', [req.params.id], (err, rows, fields) => {
+	        const query = connection.query('SELECT * FROM panos WHERE id=?', [req.params.id], (err, rows, fields) => {
 	            if (err) {
 	                //INVALID
 	                console.error(err);
@@ -138,8 +138,8 @@ module.exports = (express, connection) => {
 	    })
 
 	    .put((req, res) => {
-	        var data = req.body;
-	        var query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], (err, result) => {
+	        const data = req.body;
+	        const query = connection.query('UPDATE panos SET ? WHERE id=?', [data, req.params.id], (err, result) => {
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
@@ -157,7 +157,7 @@ module.exports = (express, connection) => {
 
 	    .delete((req, res) => {
 	        //LIMIT is somewhat redundant, but I use it for extra sanity, and so if I bungle something I only can break one row.
-	        var query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], (err, result) => {
+	        const query = connection.query('DELETE FROM panos WHERE id=? LIMIT 1', [req.params.id], (err, result) => {
 	            if(err){
 	                console.log(err);
 	                res.sendStatus(404);
