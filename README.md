@@ -38,7 +38,7 @@ Supports Collection and Specific Item requests over GET, POST, PUT, DELETE (PATC
 
 3. OR pass in MYSQL_HOST, etc as environment variables (eg. from Heroku's Config Vars)
 
-4. Your database needs to be setup with a table called `panos`, feel free to use the included SQL, the only required field for the sake of this application is the `id` field.
+4. Your database needs to be setup with a table called `panos`, feel free to use the included SQL, the only required field for the sake of this demo is the `id` field.
 
 5. `npm run start` to run server
 
