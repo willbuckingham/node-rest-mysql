@@ -1,54 +1,112 @@
 # node-rest-mysql
 
-This is a boilerplate for using Node.js with Express to host a RESTful API for a MySQL/MariaDB Database.
+A secure Node.js REST API boilerplate using Express and MySQL. Updated for 2025.
 
-Supports Collection and Specific Item requests over GET, POST, PUT, DELETE (PATCH not currently implemented)
+## Features
 
-## Resources
+- ES Modules (ESM)
+- MySQL2 with connection pooling and promise-based API
+- Parameterized queries (SQL injection prevention)
+- Input validation and sanitization (express-validator)
+- Security headers (Helmet)
+- CORS with whitelisted origins
+- Rate limiting
+- Environment-based configuration
 
-### Developed using a couple resources:
+## Requirements
 
-1. Express (http://expressjs.com/en/4x/api.html)
-2. MySQL for Node (https://github.com/mysqljs/mysql)
-3. RESTAPI Tutorial (http://www.restapitutorial.com/lessons/httpmethods.html)
-4. Router in Express 4 (https://scotch.io/tutorials/learn-to-use-the-new-router-in-expressjs-4)
-5. Build a RESTful API Using Node and Express 4 (https://scotch.io/tutorials/build-a-restful-api-using-node-and-express-4)
-6. Node 404 (http://stackoverflow.com/a/33310600)
-7. RESTful Best Practices (http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries)
-
-### Consider Using
-
-1. Test a Node RESTful API with Mocha and Chai (https://scotch.io/tutorials/test-a-node-restful-api-with-mocha-and-chai)
-2. Express CORS (https://github.com/expressjs/cors)
+- Node.js 18.11+ (for `--watch` support)
+- MySQL or MariaDB
 
 ## Installation
 
-1. `npm install`
+1. Clone and install dependencies:
 
-2. create a `credentials.js` file in the root of the repo
-
-   ```javascript
-   module.exports = {
-       host     : 'localhost',
-       user     : 'me',
-       password : 'secret',
-       database : 'my_db'
-   }
+   ```bash
+   npm install
    ```
 
-3. OR pass in MYSQL_HOST, etc as environment variables (eg. from Heroku's Config Vars)
+2. Create a `.env` file from the example:
 
-4. Your database needs to be setup with a table called `panos`, feel free to use the included SQL, the only required field for the sake of this demo is the `id` field.
+   ```bash
+   cp .env.example .env
+   ```
 
-5. `npm run start` to run server
+3. Configure your database credentials in `.env`:
 
-6. Use Postman or your browser to make requests to the api, at `/api/panoramas/` and `/api/panoramas/:id`
+   ```env
+   MYSQL_HOST=localhost
+   MYSQL_USER=root
+   MYSQL_PASSWORD=secret
+   MYSQL_DATABASE=my_db
+   MYSQL_PORT=3306
+   PORT=3000
+   CORS_ORIGIN=http://localhost:3000
+   NODE_ENV=development
+   ```
 
-## TODO
+4. Set up your database with a `panos` table. See the included SQL file for reference.
 
-1. Use whitelisted Origin header, instead of "*"
-2. Fix and Improve Route List Generation - `/api/`
-3. Support for Filtering, Limiting, Sorting Results
-4. Architecture decision and Routes for how we handle Panorama Categories
-5. Authentication?
-6. Implement things from [Consider Using](#consider-using) Section
+## Usage
+
+**Development** (with hot reload):
+
+```bash
+npm run dev
+```
+
+**Production**:
+
+```bash
+npm start
+```
+
+## API Endpoints
+
+| Method | Endpoint              | Description          |
+| ------ | --------------------- | -------------------- |
+| GET    | `/api/panoramas`      | Get all panoramas    |
+| GET    | `/api/panoramas/:id`  | Get panorama by ID   |
+| POST   | `/api/panoramas`      | Create new panorama  |
+| PUT    | `/api/panoramas/:id`  | Update panorama      |
+| DELETE | `/api/panoramas/:id`  | Delete panorama      |
+
+## Project Structure
+
+```text
+├── app.js              # Express app configuration
+├── server.js           # Server entry point
+├── db.js               # MySQL connection pool
+├── middleware/
+│   ├── security.js     # Helmet, CORS, rate limiting
+│   └── validate.js     # Input validation
+├── routers/
+│   └── panoramas.js    # Panorama routes
+├── .env.example        # Environment template
+└── package.json
+```
+
+## Security
+
+- Parameterized queries prevent SQL injection
+- Helmet sets secure HTTP headers
+- CORS restricts allowed origins
+- Rate limiting prevents abuse (100 req/15min)
+- Input validation sanitizes all user input
+- Error messages hide stack traces in production
+
+## Future Improvements
+
+- Add route list generation at `/api/`
+- Support filtering, limiting, and sorting results
+- Add panorama categories (routes and architecture)
+- Add authentication (JWT or session-based)
+- Add tests with Jest
+
+## Resources
+
+- [Express 4.x API](http://expressjs.com/en/4x/api.html)
+- [MySQL2](https://github.com/sidorares/node-mysql2)
+- [express-validator](https://express-validator.github.io/)
+- [Helmet](https://helmetjs.github.io/)
+- [Jest](https://jestjs.io/)
