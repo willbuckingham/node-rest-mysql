@@ -48,7 +48,5 @@ jspm_packages
 # Editor files
 .idea
 
-## Project specific
-
-# MySQL Credentials File
-credentials.js
+# Environment variables
+.env
