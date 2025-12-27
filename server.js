@@ -1,9 +1,7 @@
-var http = require('http');
-var app = require('./app');
+import app from './app.js';
 
-var port = process.env.PORT || 3000; 	  // set our port
-var host = process.env.HOST || '0.0.0.0'; // For Heroku to run successfully
+const PORT = process.env.PORT || 3000;
 
-http.createServer(app).listen(port, host, () => {
-	console.log("Server ready at http://" + host + ":" + port);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
